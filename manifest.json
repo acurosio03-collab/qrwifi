@@ -1,0 +1,16 @@
+{
+  "name": "MY WIFI VAULT",
+  "short_name": "WiFi Vault",
+  "description": "Pengelola password WiFi pribadi, terenkripsi di perangkat.",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#03060a",
+  "theme_color": "#03060a",
+  "icons": [
+    {"src": "icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any"},
+    {"src": "icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any"},
+    {"src": "icon-512-maskable.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable"}
+  ]
+}

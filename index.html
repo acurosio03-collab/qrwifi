@@ -1,0 +1,349 @@
+<!DOCTYPE html>
+<html lang="id"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#03060a"><title>MY WIFI VAULT</title>
+<link rel="manifest" href="manifest.json">
+<link rel="icon" type="image/png" href="icon-192.png">
+<link rel="apple-touch-icon" href="icon-192.png">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<style>
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+:root{--g:#00ff9c;--b:#00b7ff;--bg:#03060a;--c:#09131a;--l:#14303a;--t:#d9fff0;--m:#6c9a8b;--r:#ff4d6d}
+html,body{height:100%;margin:0}
+body{background:var(--bg);color:var(--t);font:14px/1.45 system-ui,Roboto,sans-serif;display:flex;flex-direction:column;overflow:hidden;padding-top:env(safe-area-inset-top)}
+.hide{display:none!important}
+svg.wi{width:1em;height:1em;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round}
+header{display:flex;align-items:center;gap:10px;padding:10px 14px;border-bottom:1px solid var(--l);background:#050c11}
+header .wi{font-size:26px;color:var(--g)}
+header h1{font:700 15px/1.1 ui-monospace,Menlo,monospace;margin:0;letter-spacing:1px;color:var(--g)}
+header small{color:var(--b);font:11px ui-monospace,monospace}
+header button{margin-left:auto}
+main{flex:1;overflow-y:auto;padding:14px;-webkit-overflow-scrolling:touch}
+.tab{display:none}.tab.on{display:block}
+nav{display:grid;grid-template-columns:repeat(5,1fr);background:#050c11;border-top:1px solid var(--l);padding-bottom:env(safe-area-inset-bottom)}
+nav button{background:none;border:0;color:var(--m);padding:9px 0 7px;font-size:11px}
+nav button span{display:block;font-size:19px}
+nav button.on{color:var(--g)}
+h2{font:700 13px ui-monospace,monospace;color:var(--b);margin:18px 0 8px;letter-spacing:1px}
+h2:first-child{margin-top:0}
+.st{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.sc{background:var(--c);border:1px solid var(--l);border-radius:12px;padding:14px;position:relative;overflow:hidden}
+.sc b{display:block;font:700 30px ui-monospace,monospace;color:var(--g)}
+.sc:nth-child(2) b{color:var(--b)}
+.sc span{color:var(--m);font-size:12px}
+input,select,textarea{width:100%;background:#050e14;border:1px solid var(--l);color:var(--t);border-radius:10px;padding:12px;font:inherit;margin:4px 0 10px;outline:0}
+input:focus,select:focus,textarea:focus{border-color:var(--g)}
+label{color:var(--m);font-size:12px}
+button{font:inherit;cursor:pointer}
+.b1,.b2,.b3{border-radius:10px;padding:11px 14px;border:1px solid var(--g);color:#001a0f;background:var(--g);font-weight:700}
+.b2{background:transparent;color:var(--g)}
+.b3{background:transparent;border-color:var(--r);color:var(--r)}
+.bw{width:100%;margin:4px 0}
+.row{display:flex;gap:8px;align-items:center}.row>*{flex:1}.row>button{flex:none}
+.it{background:var(--c);border:1px solid var(--l);border-radius:12px;padding:12px;margin-bottom:10px}
+.r1{display:flex;justify-content:space-between;align-items:center;gap:8px}
+.r1 b{font-size:15px;word-break:break-all}
+.tg{font:11px ui-monospace,monospace;color:var(--b);border:1px solid var(--b);border-radius:6px;padding:1px 6px;white-space:nowrap}
+.pw{font:15px ui-monospace,monospace;color:var(--g);margin:8px 0;word-break:break-all;padding:8px;background:#050e14;border-radius:8px}
+.nt{color:var(--m);font-size:12px;margin-bottom:6px}
+.ac{display:flex;gap:6px;flex-wrap:wrap}
+.ac button{background:#0d1d26;border:1px solid var(--l);color:var(--t);border-radius:8px;padding:7px 10px;font-size:12px}
+.em,.hs{color:var(--m);font-size:13px}
+.hs div{padding:7px 0;border-bottom:1px solid #0e222b;display:flex;justify-content:space-between;gap:8px}
+.wn{border:1px solid #6b5b00;background:#1a1600;color:#ffd84d;border-radius:10px;padding:10px;font-size:12px;margin:10px 0}
+.ok{border:1px solid #0a5;background:#02160d;color:var(--g);border-radius:10px;padding:10px;font-size:13px;margin:10px 0}
+.er{border:1px solid var(--r);background:#1a0509;color:#ff9aae;border-radius:10px;padding:10px;font-size:13px;margin:10px 0}
+#cam{position:relative;border-radius:14px;overflow:hidden;border:1px solid var(--g);background:#000;aspect-ratio:1/1;margin:10px 0}
+#cam video{width:100%;height:100%;object-fit:cover}
+#cam i{position:absolute;left:8%;right:8%;top:0;height:3px;background:var(--g);box-shadow:0 0 12px var(--g);animation:sc 2.2s linear infinite alternate;will-change:transform}
+#cam u{position:absolute;inset:12%;border:2px solid var(--b);border-radius:14px;opacity:.7}
+@keyframes sc{from{transform:translateY(10px)}to{transform:translateY(calc(min(100vw,500px) - 52px))}}
+.ov{position:fixed;inset:0;background:rgba(2,5,8,.96);z-index:9;display:flex;align-items:center;justify-content:center;padding:20px}
+#m{align-items:flex-end;padding:0;background:rgba(0,0,0,.7)}
+.sheet{background:#07121a;border:1px solid var(--l);border-radius:18px 18px 0 0;width:100%;max-height:92%;overflow-y:auto;padding:18px;padding-bottom:calc(18px + env(safe-area-inset-bottom))}
+.sheet h3{margin:0 0 10px;color:var(--g);font-family:ui-monospace,monospace}
+#lock .box{width:100%;max-width:340px;text-align:center}
+#lock .wi{font-size:76px;color:var(--g);animation:pl 2s ease-in-out infinite}
+@keyframes pl{50%{color:var(--b);opacity:.6}}
+#lock h1{font:700 20px ui-monospace,monospace;color:var(--g);margin:6px 0}
+#lock p{color:var(--m);font-size:13px}
+#lock input{text-align:center;font-size:22px;letter-spacing:8px}
+#msg{color:var(--r);min-height:20px;font-size:13px}
+#toast{position:fixed;left:50%;bottom:84px;transform:translateX(-50%);background:var(--g);color:#001a0f;padding:9px 16px;border-radius:20px;font-weight:700;font-size:13px;z-index:20;max-width:90%;text-align:center}
+ol{padding-left:18px;margin:6px 0}li{margin:4px 0}
+.kv{display:flex;justify-content:space-between;gap:10px;padding:7px 0;border-bottom:1px solid #0e222b}.kv span:first-child{color:var(--m)}
+@media(prefers-reduced-motion:reduce){*{animation:none!important}}
+</style></head><body>
+<svg width="0" height="0" style="position:absolute"><symbol id="w" viewBox="0 0 24 24"><path d="M2 8.8a15 15 0 0 1 20 0"/><path d="M5 12.5a10 10 0 0 1 14 0"/><path d="M8.5 16a5 5 0 0 1 7 0"/><circle cx="12" cy="19.5" r="1" fill="currentColor"/></symbol></svg>
+
+<div id="lock" class="ov"><div class="box">
+<svg class="wi"><use href="#w"/></svg>
+<h1>MY WIFI VAULT</h1><p id="lp">Memuat…</p>
+<input id="pin" type="password" inputmode="numeric" autocomplete="off" maxlength="12" placeholder="PIN">
+<input id="pin2" class="hide" type="password" inputmode="numeric" autocomplete="off" maxlength="12" placeholder="Ulangi PIN">
+<div id="msg"></div>
+<button class="b1 bw" id="ub">Buka</button>
+<p style="font-size:11px">Data dienkripsi di perangkat ini dan tidak dikirim ke server.</p>
+</div></div>
+
+<header><svg class="wi"><use href="#w"/></svg><div><h1>MY WIFI VAULT</h1><small>personal wifi password manager</small></div><button class="b2" id="lk">Kunci</button></header>
+
+<main>
+<section class="tab on" id="t-home">
+<div class="st"><div class="sc"><b id="n1">0</b><span>Jaringan tersimpan</span></div><div class="sc"><b id="n2">0</b><span>Favorit</span></div></div>
+<h2>CARI JARINGAN</h2>
+<input id="q" placeholder="Cari berdasarkan SSID…" autocomplete="off">
+<div id="lq"></div>
+<h2>RIWAYAT</h2><div class="hs" id="hs"></div>
+</section>
+
+<section class="tab" id="t-scan">
+<h2>QR WIFI SCANNER</h2>
+<div id="sm" class="wn">Arahkan kamera ke QR WiFi milik Anda. Pemrosesan terjadi di perangkat; gambar tidak dikirim ke mana pun.</div>
+<button class="b1 bw" id="sb">Mulai Scan Kamera</button>
+<div id="cam" class="hide"><video id="vid" playsinline muted></video><u></u><i></i></div>
+<button class="b3 bw hide" id="sx">Hentikan Kamera</button>
+<label>Atau pilih gambar QR dari galeri</label>
+<input id="sf" type="file" accept="image/*">
+<label>Atau tempel teks QR (format WIFI:T:WPA;S:nama;P:sandi;;)</label>
+<textarea id="st" rows="2" placeholder="WIFI:T:WPA;S:NamaWiFi;P:sandi;;"></textarea>
+<button class="b2 bw" id="sp">Baca Teks</button>
+<div id="sr"></div>
+</section>
+
+<section class="tab" id="t-vault">
+<h2>WIFI PASSWORD VAULT</h2>
+<button class="b1 bw" id="ad">+ Tambah Jaringan</button>
+<input id="q2" placeholder="Cari SSID…" autocomplete="off">
+<button class="b2 bw" id="ff">Tampilkan Favorit Saja: Mati</button>
+<div id="lv" style="margin-top:10px"></div>
+</section>
+
+<section class="tab" id="t-sec">
+<h2>KEAMANAN</h2>
+<div class="wn">Penyimpanan browser tidak seaman password manager khusus. Menghapus data situs/cache Chrome akan menghapus vault ini. Simpan backup terenkripsi secara berkala. Jika lupa PIN, data tidak bisa dipulihkan kecuali dari backup.</div>
+<div class="ok">Password dienkripsi AES-256-GCM (kunci dari PIN via PBKDF2). Aplikasi mengunci otomatis saat Chrome ditutup/berpindah aplikasi atau diam 2 menit.</div>
+<button class="b2 bw" id="cp">Ganti PIN</button>
+<button class="b3 bw" id="wp">Hapus Semua Data</button>
+<h2>EXPORT BACKUP</h2>
+<label>Password backup (min. 6 karakter)</label>
+<input id="bp" type="password" autocomplete="off">
+<button class="b1 bw" id="ex">Export Backup Terenkripsi</button>
+<h2>IMPORT BACKUP</h2>
+<input id="if" type="file" accept=".wvbak,application/json">
+<label>Password backup</label>
+<input id="ip" type="password" autocomplete="off">
+<button class="b1 bw" id="im">Import Backup</button>
+</section>
+
+<section class="tab" id="t-info">
+<h2>INFORMASI WIFI</h2>
+<div id="inf"></div>
+<div class="wn">Chrome tidak mengizinkan situs membaca SSID aktif, daftar WiFi tersimpan, maupun passwordnya. Aplikasi ini hanya mengelola data yang Anda masukkan atau dapatkan lewat QR.</div>
+<h2>CARA MENDAPATKAN QR WIFI (ANDROID 11)</h2>
+<ol><li>Buka <b>Setelan → Jaringan &amp; internet → Wi-Fi</b>.</li><li>Sambungkan ke WiFi milik Anda (atau pilih jaringan tersimpan).</li><li>Ketuk ikon gerigi di samping nama jaringan.</li><li>Ketuk <b>Bagikan / Share</b> dan verifikasi dengan PIN/pola layar bila diminta.</li><li>QR muncul di layar. Gunakan HP lain untuk membukanya, lalu scan di tab Scan di sini, atau screenshot lalu pilih dari galeri.</li></ol>
+<p class="em">Nama menu bisa sedikit berbeda di XOS/Infinix. Hanya untuk jaringan milik Anda atau yang diizinkan pemiliknya.</p>
+</section>
+</main>
+
+<nav><button data-t="home" class="on"><span>⌂</span>Home</button><button data-t="scan"><span>◉</span>Scan</button><button data-t="vault"><span>▣</span>Vault</button><button data-t="sec"><span>⛨</span>Aman</button><button data-t="info"><span>ⓘ</span>Info</button></nav>
+<div id="m" class="ov hide"><div class="sheet" id="mc"></div></div>
+
+<script>
+const $=s=>document.querySelector(s),enc=new TextEncoder(),dec=new TextDecoder();
+let K=null,V=null,meta=null,fails=0,shown=new Set(),stream=null,tmr=null,idle=null,pk=0,last=null,favOnly=false,tab='home';
+const SEC={WPA:'WPA/WPA2',SAE:'WPA3',WEP:'WEP',nopass:'Terbuka',EAP:'WPA-EAP'};
+const esc=s=>String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const b64=u=>{let s='';u.forEach(c=>s+=String.fromCharCode(c));return btoa(s)};
+const ub64=s=>Uint8Array.from(atob(s),c=>c.charCodeAt(0));
+function toast(t){const e=document.createElement('div');e.id='toast';e.textContent=t;document.body.appendChild(e);setTimeout(()=>e.remove(),2200)}
+async function dk(pw,salt){const m=await crypto.subtle.importKey('raw',enc.encode(pw),'PBKDF2',false,['deriveKey']);return crypto.subtle.deriveKey({name:'PBKDF2',salt,iterations:120000,hash:'SHA-256'},m,{name:'AES-GCM',length:256},false,['encrypt','decrypt'])}
+async function seal(k,o){const iv=crypto.getRandomValues(new Uint8Array(12));const c=await crypto.subtle.encrypt({name:'AES-GCM',iv},k,enc.encode(JSON.stringify(o)));return{iv:b64(iv),d:b64(new Uint8Array(c))}}
+async function unseal(k,o){return JSON.parse(dec.decode(await crypto.subtle.decrypt({name:'AES-GCM',iv:ub64(o.iv)},k,ub64(o.d))))}
+async function save(){localStorage.wv_data=JSON.stringify(await seal(K,V))}
+function hist(a,s){V.hist.unshift({a,s,t:Date.now()});V.hist=V.hist.slice(0,50)}
+
+/* ---- lock ---- */
+function initLock(){
+ if(!window.crypto||!crypto.subtle){$('#lp').textContent='Browser/koneksi tidak mendukung enkripsi. Buka lewat HTTPS.';$('#ub').disabled=true;return}
+ try{meta=JSON.parse(localStorage.wv_meta||'null')}catch{meta=null}
+ $('#lp').textContent=meta?'Masukkan PIN untuk membuka vault.':'Buat PIN (min. 4 angka) untuk melindungi vault.';
+ $('#pin2').classList.toggle('hide',!!meta);
+}
+async function unlock(){
+ const p=$('#pin').value,msg=$('#msg');msg.textContent='';
+ if(p.length<4){msg.textContent='PIN minimal 4 karakter.';return}
+ $('#ub').disabled=true;
+ try{
+  if(!meta){
+   if(p!==$('#pin2').value){msg.textContent='PIN tidak sama.';return}
+   const salt=crypto.getRandomValues(new Uint8Array(16));
+   K=await dk(p,salt);V={nets:[],hist:[]};meta={salt:b64(salt)};
+   localStorage.wv_meta=JSON.stringify(meta);await save();
+  }else{
+   try{const k=await dk(p,ub64(meta.salt));V=await unseal(k,JSON.parse(localStorage.wv_data));K=k;fails=0}
+   catch{fails++;msg.textContent='PIN salah.'+(fails>2?' Tunggu '+Math.min(fails*2,30)+' detik.':'');if(fails>2)await new Promise(r=>setTimeout(r,Math.min(fails*2,30)*1000));return}
+  }
+  $('#pin').value=$('#pin2').value='';$('#lock').classList.add('hide');
+  navigator.storage&&navigator.storage.persist&&navigator.storage.persist();
+  render();bump();
+ }finally{$('#ub').disabled=false}
+}
+function lock(){
+ if(!K)return;K=null;V=null;shown.clear();last=null;stopScan();closeM();
+ ['#lq','#lv','#hs','#sr'].forEach(s=>$(s).innerHTML='');$('#n1').textContent=$('#n2').textContent='0';
+ $('#q').value=$('#q2').value='';
+ initLock();$('#lock').classList.remove('hide');
+}
+function bump(){clearTimeout(idle);idle=setTimeout(lock,120000)}
+document.addEventListener('visibilitychange',()=>{if(document.hidden&&Date.now()-pk>60000)lock()});
+addEventListener('pagehide',lock);
+['touchstart','click','keydown'].forEach(e=>addEventListener(e,()=>{if(K)bump()},{passive:true}));
+
+/* ---- render ---- */
+function card(n){const s=shown.has(n.id);
+ return `<div class="it" data-id="${n.id}"><div class="r1"><b>${esc(n.ssid)}</b><span class="tg">${SEC[n.sec]||esc(n.sec)}</span></div><div class="pw" data-a="sh">${n.sec==='nopass'?'(tanpa password)':s?esc(n.pass):'•'.repeat(Math.min(n.pass.length,12)||8)}</div>${n.note?`<div class="nt">${esc(n.note)}</div>`:''}<div class="ac"><button data-a="fav">${n.fav?'★ Favorit':'☆ Favorit'}</button><button data-a="sh">${s?'Sembunyi':'Lihat'}</button><button data-a="cp">Salin</button><button data-a="ed">Edit</button><button data-a="del">Hapus</button></div></div>`}
+function list(el,q,fav,emptyTxt){
+ const x=V.nets.filter(n=>(!fav||n.fav)&&n.ssid.toLowerCase().includes(q.trim().toLowerCase())).sort((a,b)=>(b.fav?1:0)-(a.fav?1:0)||a.ssid.localeCompare(b.ssid));
+ el.innerHTML=x.length?x.map(card).join(''):`<div class="em">${emptyTxt}</div>`}
+function render(){
+ if(!V)return;
+ $('#n1').textContent=V.nets.length;$('#n2').textContent=V.nets.filter(n=>n.fav).length;
+ const q=$('#q').value;
+ if(q.trim())list($('#lq'),q,false,'Tidak ada jaringan cocok.');else $('#lq').innerHTML='<div class="em">Ketik nama WiFi untuk mencari.</div>';
+ list($('#lv'),$('#q2').value,favOnly,V.nets.length?'Tidak ada jaringan cocok.':'Vault kosong. Tambah jaringan atau scan QR WiFi.');
+ $('#hs').innerHTML=V.hist.length?V.hist.slice(0,15).map(h=>`<div><span>${h.a}: ${esc(h.s)}</span><span>${new Date(h.t).toLocaleString('id-ID',{day:'2-digit',month:'short',hour:'2-digit',minute:'2-digit'})}</span></div>`).join(''):'Belum ada riwayat.';
+}
+$('#q').oninput=render;$('#q2').oninput=render;
+$('#ff').onclick=()=>{favOnly=!favOnly;$('#ff').textContent='Tampilkan Favorit Saja: '+(favOnly?'Aktif':'Mati');render()};
+
+/* ---- actions ---- */
+document.addEventListener('click',async e=>{
+ const b=e.target.closest('[data-a]');if(!b||!V)return;
+ const el=b.closest('[data-id]'),id=el&&el.dataset.id,n=V.nets.find(x=>x.id===id);if(!n)return;
+ const a=b.dataset.a;
+ if(a==='sh'){shown.has(id)?shown.delete(id):shown.add(id);render()}
+ else if(a==='fav'){n.fav=!n.fav;await save();render()}
+ else if(a==='cp'){try{await navigator.clipboard.writeText(n.pass);toast('Password disalin');setTimeout(()=>navigator.clipboard.writeText('').catch(()=>{}),30000)}catch{toast('Gagal menyalin. Gunakan tombol Lihat.')}}
+ else if(a==='ed')form(n);
+ else if(a==='del'&&confirm('Hapus "'+n.ssid+'"?')){V.nets=V.nets.filter(x=>x.id!==id);hist('Dihapus',n.ssid);await save();render();toast('Dihapus')}
+});
+function closeM(){$('#m').classList.add('hide');$('#mc').innerHTML=''}
+function openM(h){$('#mc').innerHTML=h;$('#m').classList.remove('hide')}
+function form(n,pre){
+ n=n||pre||{};
+ openM(`<h3>${n.id?'Edit':'Tambah'} Jaringan</h3><label>Nama WiFi (SSID)</label><input id="fs" maxlength="32" autocomplete="off" value="${esc(n.ssid||'')}"><label>Password</label><div class="row"><input id="fp" type="password" autocomplete="off" value="${esc(n.pass||'')}"><button class="b2" id="fe" type="button">Lihat</button></div><label>Keamanan</label><select id="fc">${Object.keys(SEC).map(k=>`<option value="${k}"${(n.sec||'WPA')===k?' selected':''}>${SEC[k]}</option>`).join('')}</select><label>Catatan (opsional)</label><input id="fn" maxlength="80" value="${esc(n.note||'')}"><div class="row"><button class="b2" id="fx">Batal</button><button class="b1" id="fv">Simpan</button></div>`);
+ $('#fe').onclick=()=>{const f=$('#fp');f.type=f.type==='password'?'text':'password'};
+ $('#fx').onclick=closeM;
+ $('#fv').onclick=async()=>{
+  const ssid=$('#fs').value.trim(),pass=$('#fp').value,sec=$('#fc').value;
+  if(!ssid)return toast('SSID wajib diisi');
+  if(sec!=='nopass'&&!pass)return toast('Password wajib diisi');
+  if(V.nets.some(x=>x.ssid===ssid&&x.id!==n.id))return toast('SSID sudah ada di vault');
+  const o={ssid,pass:sec==='nopass'?'':pass,sec,note:$('#fn').value.trim()};
+  if(n.id){Object.assign(V.nets.find(x=>x.id===n.id),o);hist('Diubah',ssid)}
+  else{V.nets.push({id:crypto.randomUUID?crypto.randomUUID():String(Date.now()+Math.random()),fav:false,...o});hist(pre?'Dari QR':'Ditambah',ssid)}
+  await save();closeM();render();toast('Tersimpan')};
+}
+$('#ad').onclick=()=>form();
+
+/* ---- scanner ---- */
+function parseWifi(s){
+ s=s.trim();if(!/^WIFI:/i.test(s))return null;s=s.slice(5);
+ const f={};let k='',v='',ik=true,x=false;
+ for(const c of s){
+  if(x){v+=c;x=false;continue}
+  if(c==='\\'){x=true;continue}
+  if(ik){if(c===':')ik=false;else if(c!==';')k+=c;continue}
+  if(c===';'){f[k]=v;k=v='';ik=true;continue}
+  v+=c}
+ if(!ik&&k)f[k]=v;
+ if(!f.S)return null;
+ let t=(f.T||'WPA').toUpperCase(),sec='WPA';
+ if(t==='NOPASS'||(!f.T&&!f.P))sec='nopass';else if(t==='WEP')sec='WEP';else if(t==='SAE')sec='SAE';else if(t.includes('EAP'))sec='EAP';
+ return{ssid:f.S,pass:f.P||'',sec,note:'Dari QR'}}
+function showRes(raw){
+ const p=parseWifi(raw),r=$('#sr');
+ if(!p){last=null;r.innerHTML=`<div class="er">QR terbaca, tetapi bukan QR WiFi (harus diawali "WIFI:"). Isi: ${esc(raw.slice(0,50))}${raw.length>50?'…':''}</div>`;return}
+ last=p;
+ r.innerHTML=`<div class="ok"><b>QR WiFi terbaca</b></div><div class="it"><div class="kv"><span>SSID</span><b>${esc(p.ssid)}</b></div><div class="kv"><span>Keamanan</span><span>${SEC[p.sec]}</span></div><div class="kv"><span>Password</span><span id="rp" data-v="0">${p.sec==='nopass'?'(tanpa password)':'••••••••'}</span></div>${p.sec==='EAP'?'<div class="wn">Jaringan WPA-Enterprise memakai akun/sertifikat; hanya SSID dan password (jika ada) yang tersimpan.</div>':''}${!p.pass&&p.sec!=='nopass'?'<div class="wn">QR tidak memuat password.</div>':''}<div class="ac" style="margin-top:8px"><button id="rv">Lihat</button><button id="rs">Simpan ke Vault</button></div></div>`;
+ $('#rv').onclick=()=>{const e=$('#rp');if(p.sec==='nopass')return;const on=e.dataset.v==='1';e.dataset.v=on?'0':'1';e.textContent=on?'••••••••':(p.pass||'(kosong)');$('#rv').textContent=on?'Lihat':'Sembunyi'};
+ $('#rs').onclick=async()=>{
+  const ex=V.nets.find(x=>x.ssid===p.ssid);
+  if(ex){if(!confirm('"'+p.ssid+'" sudah ada. Timpa?'))return;Object.assign(ex,{pass:p.pass,sec:p.sec});hist('Diubah',p.ssid)}
+  else{V.nets.push({id:crypto.randomUUID?crypto.randomUUID():String(Date.now()),fav:false,...p});hist('Dipindai',p.ssid)}
+  await save();render();toast('Disimpan ke vault')};
+}
+function det(){try{return new BarcodeDetector({formats:['qr_code']})}catch{return null}}
+function stopScan(){clearInterval(tmr);if(stream){stream.getTracks().forEach(t=>t.stop());stream=null}$('#cam').classList.add('hide');$('#sx').classList.add('hide');$('#sb').classList.remove('hide')}
+$('#sx').onclick=stopScan;
+$('#sb').onclick=async()=>{
+ const sm=$('#sm');sm.className='wn';
+ if(!('BarcodeDetector' in window)||!det()){sm.className='er';sm.textContent='Pemindai QR bawaan tidak didukung browser ini. Pilih gambar QR dari galeri atau tempel teks QR di bawah.';return}
+ if(!navigator.mediaDevices||!navigator.mediaDevices.getUserMedia){sm.className='er';sm.textContent='Kamera butuh koneksi HTTPS. Buka aplikasi lewat https://.';return}
+ try{
+  stream=await navigator.mediaDevices.getUserMedia({video:{facingMode:{ideal:'environment'}},audio:false});
+  const v=$('#vid');v.srcObject=stream;await v.play();
+  $('#cam').classList.remove('hide');$('#sx').classList.remove('hide');$('#sb').classList.add('hide');
+  const d=det();let busy=false;
+  tmr=setInterval(async()=>{if(busy)return;busy=true;try{const r=await d.detect(v);if(r.length){stopScan();if(navigator.vibrate)navigator.vibrate(60);showRes(r[0].rawValue)}}catch{}busy=false},350);
+ }catch(er){stopScan();sm.className='er';sm.textContent=er.name==='NotAllowedError'?'Izin kamera ditolak. Izinkan kamera untuk situs ini di pengaturan Chrome, lalu coba lagi.':er.name==='NotFoundError'?'Kamera tidak ditemukan.':'Kamera tidak dapat dibuka: '+(er.name||'error')}
+};
+$('#sf').onclick=()=>pk=Date.now();
+$('#sf').onchange=async e=>{
+ const f=e.target.files[0];pk=0;if(!f)return;
+ const d=det();if(!d){$('#sr').innerHTML='<div class="er">Pembaca QR dari gambar tidak didukung browser ini. Gunakan tempel teks QR.</div>';return}
+ try{const bm=await createImageBitmap(f);const r=await d.detect(bm);r.length?showRes(r[0].rawValue):$('#sr').innerHTML='<div class="er">QR tidak ditemukan pada gambar. Coba gambar yang lebih jelas.</div>'}
+ catch{$('#sr').innerHTML='<div class="er">Gambar tidak dapat dibaca.</div>'}
+ e.target.value=''};
+$('#sp').onclick=()=>{const t=$('#st').value;t.trim()?showRes(t):toast('Tempel teks QR dulu')};
+
+/* ---- security & backup ---- */
+$('#cp').onclick=()=>{
+ openM(`<h3>Ganti PIN</h3><label>PIN baru</label><input id="np" type="password" inputmode="numeric" maxlength="12"><label>Ulangi PIN baru</label><input id="np2" type="password" inputmode="numeric" maxlength="12"><div class="row"><button class="b2" id="fx">Batal</button><button class="b1" id="fv">Simpan</button></div>`);
+ $('#fx').onclick=closeM;
+ $('#fv').onclick=async()=>{const p=$('#np').value;if(p.length<4)return toast('Minimal 4 karakter');if(p!==$('#np2').value)return toast('PIN tidak sama');
+  const salt=crypto.getRandomValues(new Uint8Array(16));K=await dk(p,salt);meta={salt:b64(salt)};localStorage.wv_meta=JSON.stringify(meta);await save();closeM();toast('PIN diganti')}};
+$('#wp').onclick=()=>{if(confirm('Hapus SEMUA data vault di perangkat ini? Tidak bisa dibatalkan.')&&confirm('Yakin? Pastikan sudah punya backup.')){localStorage.removeItem('wv_data');localStorage.removeItem('wv_meta');K=null;V=null;location.reload()}};
+$('#ex').onclick=async()=>{
+ const p=$('#bp').value;if(p.length<6)return toast('Password backup minimal 6 karakter');
+ if(!V.nets.length)return toast('Vault kosong');
+ const salt=crypto.getRandomValues(new Uint8Array(16)),o=await seal(await dk(p,salt),V);
+ o.app='wifivault';o.v=1;o.salt=b64(salt);
+ const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([JSON.stringify(o)],{type:'application/json'}));
+ a.download='wifi-vault-'+new Date().toISOString().slice(0,10)+'.wvbak';pk=Date.now();document.body.appendChild(a);a.click();a.remove();
+ setTimeout(()=>URL.revokeObjectURL(a.href),5000);$('#bp').value='';toast('Backup dibuat')};
+$('#if').onclick=()=>pk=Date.now();
+$('#im').onclick=async()=>{
+ const f=$('#if').files[0],p=$('#ip').value;pk=0;
+ if(!f)return toast('Pilih file backup');if(!p)return toast('Masukkan password backup');
+ try{
+  const o=JSON.parse(await f.text());if(o.app!=='wifivault')throw 0;
+  const d=await unseal(await dk(p,ub64(o.salt)),o);
+  if(!Array.isArray(d.nets))throw 0;
+  let c=0;
+  for(const n of d.nets){if(!n||!n.ssid)continue;const ex=V.nets.find(x=>x.ssid===n.ssid);
+   if(ex)Object.assign(ex,{pass:n.pass||'',sec:n.sec||'WPA',note:n.note||'',fav:!!n.fav});
+   else V.nets.push({id:crypto.randomUUID?crypto.randomUUID():String(Date.now()+c),ssid:String(n.ssid),pass:String(n.pass||''),sec:n.sec||'WPA',note:n.note||'',fav:!!n.fav});c++}
+  hist('Impor',c+' jaringan baru');await save();render();$('#ip').value='';$('#if').value='';toast('Impor selesai: '+c+' baru')
+ }catch{toast('Gagal: file rusak atau password salah')}};
+
+/* ---- info ---- */
+function info(){
+ const c=navigator.connection||{},rows=[['Status koneksi',navigator.onLine?'Online':'Offline'],['Tipe koneksi',c.type||'Tidak tersedia di browser ini'],['Kualitas efektif',c.effectiveType||'Tidak tersedia'],['Perkiraan kecepatan',c.downlink?c.downlink+' Mbps':'Tidak tersedia'],['Latensi (RTT)',c.rtt!=null?c.rtt+' ms':'Tidak tersedia'],['Hemat data',c.saveData?'Aktif':'Mati'],['Pemindai QR',('BarcodeDetector' in window)?'Didukung':'Tidak didukung'],['Enkripsi (Web Crypto)',(window.crypto&&crypto.subtle)?'Didukung':'Tidak tersedia'],['Jaringan di vault',V?V.nets.length:0]];
+ $('#inf').innerHTML=rows.map(r=>`<div class="kv"><span>${r[0]}</span><span>${esc(r[1])}</span></div>`).join('')}
+addEventListener('online',()=>tab==='info'&&info());addEventListener('offline',()=>tab==='info'&&info());
+
+/* ---- nav ---- */
+document.querySelectorAll('nav button').forEach(b=>b.onclick=()=>{
+ tab=b.dataset.t;if(tab!=='scan')stopScan();
+ document.querySelectorAll('nav button').forEach(x=>x.classList.toggle('on',x===b));
+ document.querySelectorAll('.tab').forEach(x=>x.classList.toggle('on',x.id==='t-'+tab));
+ if(tab==='info')info();render();$('main').scrollTop=0});
+$('#lk').onclick=lock;$('#ub').onclick=unlock;
+$('#pin').onkeydown=$('#pin2').onkeydown=e=>{if(e.key==='Enter')unlock()};
+$('#m').onclick=e=>{if(e.target.id==='m')closeM()};
+initLock();
+if('serviceWorker' in navigator&&location.protocol!=='file:')addEventListener('load',()=>navigator.serviceWorker.register('sw.js').catch(()=>{}));
+</script></body></html>
